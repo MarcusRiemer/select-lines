@@ -7,12 +7,14 @@
 
 typedef std::uint64_t line_index;
 
-const std::string DELIMITER("\r\n");
+const int ERR_NUM_ARGS = 1;
+const int ERR_FILE_OPEN = 2;
 
 int main(int argc, char **argv) {
   auto args = std::vector<std::string>(argv + 1, argv + argc);
   if (args.size() != 3) {
     std::cout << "Usage: <filename> <first_line> <num_lines>" << std::endl;
+    return ERR_NUM_ARGS;
   }
 
   const std::string filename = args[0];
@@ -26,6 +28,7 @@ int main(int argc, char **argv) {
 
   if (!file.is_open()) {
     std::cerr << "Something went wrong when opening the file" << std::endl;
+    return ERR_FILE_OPEN;
   }
 
   while (current_line_num < end && std::getline(file, current_line, '\n')) {
